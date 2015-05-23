@@ -1,0 +1,53 @@
+{
+  "type": "network",
+  "version": "1.0",
+  "data": "data.json",
+  "logo": {
+    "text": "RNVDV",
+    "file": "http://jeroen-noordhoek.nl/wp-content/uploads/2014/08/logo36x36.png",
+    "link": "http://bobvdvelde.github.io/FSW_overview/"
+  },
+  "text": {
+    "title": "The ICA 2015 university co-authorship network",
+    "more": "Data may contain errors due to scrapping / reporting of names and universities. ",
+    "intro": "Co-authorhip network based on the ICA 2015 papers<br><br>Node sizes \t\u003d Number of unique authors<br>Edges\t\u003d Shared papers<br>Colour\t\u003d Partitioning based on modularity algorithm<br><br>Click for additional information. "
+  },
+  "legend": {
+    "edgeLabel": "Shared papers",
+    "colorLabel": "Module membership",
+    "nodeLabel": "University"
+  },
+  "features": {
+    "search": true,
+    "groupSelectorAttribute": false,
+    "hoverBehavior": "dim"
+  },
+  "informationPanel": {
+    "imageAttribute": false,
+    "groupByEdgeDirection": false
+  },
+  "sigma": {
+    "graphProperties": {
+      "minEdgeSize": 0.2,
+      "maxNodeSize": 7,
+      "maxEdgeSize": 0.5,
+      "minNodeSize": 1
+    },
+    "drawingProperties": {
+      "labelThreshold": 5,
+      "hoverFontStyle": "bold",
+      "defaultEdgeType": "curve",
+      "defaultLabelColor": "#000",
+      "defaultLabelHoverColor": "#fff",
+      "defaultLabelSize": 14,
+      "activeFontStyle": "bold",
+      "fontStyle": "bold",
+      "defaultHoverLabelBGColor": "#002147",
+      "defaultLabelBGColor": "#ddd"
+    },
+    "mouseProperties": {
+      "minRatio": 0.75,
+      "maxRatio": 20
+    }
+  }
+}
