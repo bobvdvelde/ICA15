@@ -1,0 +1,16 @@
+{
+    "contents" : "library(igraph)\nlibrary(Matrix)\n\n## original function from 'disparityfilter' package.\nget.backbone <- function (graph, alpha = 0.05, directed = FALSE) {\n  G = graph\n  edgelist = get.data.frame(G)\n  colnames(edgelist) = c(\"from\", \"to\", \"weight\")\n  nodes = unique(c(edgelist[, 1], edgelist[, 2]))\n  N = length(nodes)\n  backbone = NULL\n  cat(\"Disparity Filter\\n\")\n  cat(\"alpha =\", alpha, \"\\n\")\n  cat(\"\\nOriginal graph\\n\")\n  print(G)\n  for (i in 1:N) {\n    nei = edgelist[edgelist$from == nodes[i], ]\n    nei = rbind(nei, edgelist[edgelist$to == nodes[i], ])\n    k_i = length(edgelist$to[edgelist$to == nodes[i]]) + \n      length(edgelist$to[edgelist$from == nodes[i]])\n    if (k_i > 1) {\n      for (j in 1:k_i) {\n        \n        p_ij = as.numeric(nei$weight[j])/sum(as.numeric(nei$weight))\n        alpha_ij = (1 - p_ij)^(k_i - 1)\n        if (alpha_ij < alpha) {\n          backbone = rbind(backbone, c(nei$from[j], nei$to[j], \n                                       nei$weight[j]))\n        }\n      }\n    }\n  }\n  colnames(backbone) = c(\"from\", \"to\", \"weight\")\n  backbone = unique(backbone[, c(\"from\", \"to\", \"weight\")])\n  G_backbone = graph.data.frame(backbone, directed = directed)\n  cat(\"\\nBackbone graph\\n\")\n  print(G_backbone)\n  return(G_backbone)\n}\n\n## Hip function using sparse matrices (results should be identical to get.backbone, but much faster).\nbackbone <- function(g){\n  mat = get.adjacency(g, attr='weight')\n  if(!is.directed(g)) mat[lower.tri(mat)] = 0 # prevents counting edges double in symmetric matrix (undirected graph)\n  weightsum = rowSums(mat) + colSums(mat)\n  k = rowSums(mat>0) + colSums(mat>0)\n  \n  edgelist_ids = get.edgelist(g, names=F)\n  alpha_ij = getAlpha(mat, weightsum, k, edgelist_ids) # alpha for edges from i to j\n  alpha_ji = getAlpha(mat, weightsum, k, edgelist_ids, transpose=T)\n  alpha_ij[alpha_ji < alpha_ij] = alpha_ji[alpha_ji < alpha_ij]\n  alpha_ij\n}\n\ngetAlpha <- function(mat, weightsum, k, edgelist_ids, transpose=F){\n  if(transpose) mat = t(mat)\n  mat = mat / weightsum\n  alpha = ((1 - mat)^(k-1))\n  if(transpose) alpha = t(alpha)\n  alpha[edgelist_ids]\n}\n\n\n## experimental: calculate backbone for only in/out degree (haven't tested this yet)\nbackbone.indegree <- function(g){\n  mat = t(get.adjacency(g, attr='weight'))\n  weightsum = rowSums(mat)\n  k = rowSums(mat > 0)\n  edgelist_ids = get.edgelist(g, names=F)\n  getAlpha(mat, weightsum, k, edgelist_ids)\n}\n\nbackbone.outdegree <- function(g){\n  mat = t(get.adjacency(g, attr='weight'))\n  weightsum = colSums(mat)\n  k = colSums(mat > 0)\n  edgelist_ids = get.edgelist(g, names=F)\n  getAlpha(mat, weightsum, k, edgelist_ids, transpose=T)\n}\n\n\n",
+    "created" : 1431960097265.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2766337938",
+    "id" : "987D4D3",
+    "lastKnownWriteTime" : 1431978460,
+    "path" : "C:/Users/Bob/Dropbox/ICA15/backbone.r",
+    "project_path" : "backbone.r",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

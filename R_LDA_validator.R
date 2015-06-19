@@ -161,3 +161,4 @@ plot_matrix(fma_10,"best")
 by_topic(tokens, fm_10$meta, fm_10$model, 17) # unique
 by_topic(tokens, fm_10$meta, fm_10$model, 1) # shared
 
+cprob <- function(dataset, x, y){dataset[[x]]*dataset[[y]]/sum(dataset[[x]])+sum(dataset[[y]])}
